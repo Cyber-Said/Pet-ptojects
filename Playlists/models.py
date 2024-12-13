@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from User.models import User
+from User.models import CustomUser
 from Videos.models import Video
 
 class Playlist(models.Model):

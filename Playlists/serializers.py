@@ -13,8 +13,10 @@ class PlaylistSerializer(serializers.ModelSerializer):
         model = Playlist
         fields = '__all__'
 
-
-
+class VideoPlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VideoPlaylist
+        fields = '__all__'
 
 
 
@@ -29,7 +31,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
 # class PlaylistSerializer(serializers.Serializer):
 #     title = serializers.CharField(max_length=255)
 #     description = serializers.CharField()
-#     created_by_id = serializers.IntegerField()
+#     created_by = serializers.IntegerField()
 #     created_at = serializers.DateTimeField(default=datetime.now)
 #
 #     def create(self, validated_data):
@@ -38,7 +40,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
 #     def update(self, instance, validated_data):
 #         instance.title = validated_data.get('title', instance.title)
 #         instance.description = validated_data.get('description', instance.description)
-#         instance.created_by_id = validated_data.get('created_by_id', instance.created_by_id)
+#         instance.created_by = validated_data.get('created_by', instance.created_by)
 #         instance.created_at = validated_data.get('created_at', instance.created_at)
 #         instance.save()
 #         return instance

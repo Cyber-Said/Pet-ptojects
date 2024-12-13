@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'Tags.apps.TagsConfig',
     'Playlists.apps.PlaylistsConfig',
     'rest_framework',
+    'drf_spectacular'
 ]
-AUTH_USER_MODEL = 'User.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'YoutubeClone.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+AUTH_USER_MODEL = 'User.CustomUser'
 
 DATABASES = {
     'default': {
@@ -119,7 +120,16 @@ USE_TZ = True
 
 USE_I18N = True
 
-
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
