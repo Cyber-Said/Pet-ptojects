@@ -1,3 +1,4 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,9 +10,9 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExampl
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
-    @extend_schema(
-        request=UserSerializer,
-        responses={201: {"message": "User created successfully"}},
+    @swagger_auto_schema(
+        request_body=UserSerializer,
+        responses={201: UserSerializer},
     )
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -36,6 +37,10 @@ class CurrentUserView(APIView):
             "last_name": user.last_name
         })
 
+    @swagger_auto_schema(
+        request_body=UserSerializer,
+        responses={200: UserSerializer},
+    )
     def put(self, request):
         user = request.user
         serializer = UserSerializer(user, data=request.data, partial=True)
@@ -45,3 +50,12 @@ class CurrentUserView(APIView):
             return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
 
         return Response({"message" : serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    @extend_schema(
+        responses={204: {"message": "User deleted successfully"}},
+    )
+    def delete(self, request):
+        user = request.user  # Получаем текущего пользователя
+        user.delete()  # Удаляем пользователя из базы данных
+        return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)

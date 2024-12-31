@@ -17,8 +17,6 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(nickname, email, password, **extra_fields)
-
-
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(unique=True)
     nickname = models.CharField(max_length=30, unique=True)

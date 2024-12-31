@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from User.models import CustomUser
 
@@ -6,7 +7,7 @@ from User.models import CustomUser
 class Video(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    video_file = models.FileField(upload_to='videos/')
+    video_file = models.FileField() #upload_to='video/', validators=[FileExtensionValidator(allowed_extensions=['mp4'])]
     upload_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     views = models.IntegerField(default=0)

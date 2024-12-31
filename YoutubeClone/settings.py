@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,7 +43,9 @@ INSTALLED_APPS = [
     'Tags.apps.TagsConfig',
     'Playlists.apps.PlaylistsConfig',
     'rest_framework',
-    'drf_spectacular'
+    'drf_spectacular',
+    'django_extensions',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -123,12 +126,24 @@ USE_I18N = True
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    # 'PAGE_SIZE': 12,
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=35),  # Время жизни access-токена
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Время жизни refresh-токена
+    'ROTATE_REFRESH_TOKENS': False,  # Включить обновление refresh-токенов
+    'BLACKLIST_AFTER_ROTATION': True,  # Блокировать старый refresh-токен после обновления
+    'UPDATE_LAST_LOGIN': False,  # Обновление времени последнего входа пользователя
 }
 
 # Static files (CSS, JavaScript, Images)
@@ -140,3 +155,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
